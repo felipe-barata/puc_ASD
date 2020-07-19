@@ -1,5 +1,6 @@
 package br.com.sigo.consultoria.services.impl;
 
+import br.com.sigo.consultoria.domain.Categoria;
 import br.com.sigo.consultoria.domain.Empresa;
 import br.com.sigo.consultoria.dtos.EmpresaDTO;
 import br.com.sigo.consultoria.exceptions.CategoriaNaoEncontradaException;
@@ -57,6 +58,14 @@ public class EmpresaServiceImpl implements EmpresaService {
       } else {
         log.debug("atualizar - nao existe empresa com esse CNPJ");
       }
+
+      Optional<Categoria> optionalCategoria = categoriaRepository.findById(empresa.getCategoria());
+      if (optionalCategoria.isEmpty()) {
+        log.warn("atualizar - categoria: {} nao encontrada", empresa.getCategoria());
+        throw new CategoriaNaoEncontradaException(empresa.getCategoria());
+      } else {
+        e.setCategoria(optionalCategoria.get());
+      }
       e = empresaRepository.save(e);
       if (e != null) {
         empresa.setId(e.getId());
@@ -82,7 +91,7 @@ public class EmpresaServiceImpl implements EmpresaService {
         throw new EmpresaNaoEncontradaException(cnpj);
       }
 
-      return empresaRepository.atualizaCodigoCategoriaEmpresa(categoria, cnpj);
+      return empresaRepository.atualizaCodigoCategoriaEmpresa(categoria, cnpj) > 0;
 
     } catch (Exception e) {
       log.error("atribuirCategoriaAEmpresa - Erro: ", e);

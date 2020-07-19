@@ -46,4 +46,7 @@ public class EmpresaDTO implements Serializable {
   @NotBlank(message = "Obrigatório informar o número")
   private String numero;
 
+  @Min(value = 1, message = "Obrigatório informar uma categoria")
+  private Integer categoria;
+
 }

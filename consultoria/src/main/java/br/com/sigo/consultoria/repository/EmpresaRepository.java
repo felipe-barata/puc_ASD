@@ -18,6 +18,6 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Integer> {
   @Transactional
   @Modifying
   @Query(value = "update empresa set categoria_id = :codigoCategoria where cnpj = :cnpj", nativeQuery = true)
-  Boolean atualizaCodigoCategoriaEmpresa(@Param("codigoCategoria") Integer codigoCategoria, @Param("cnpj") String cnpj);
+  Integer atualizaCodigoCategoriaEmpresa(@Param("codigoCategoria") Integer codigoCategoria, @Param("cnpj") String cnpj);
 
 }
