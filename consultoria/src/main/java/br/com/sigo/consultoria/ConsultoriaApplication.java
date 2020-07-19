@@ -8,13 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableAutoConfiguration
 public class ConsultoriaApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ConsultoriaApplication.class, args);
-	}
-
-
-	///Segurança - O sistema deve apresentar altos padrões de segurança.
-	//Implantação – O sistema deve utilizar práticas de integração contínua.
-//Testabilidade - O sistema deve ser simples para testar.
-	//Desempenho - O sistema deve ser rápido.
+  public static void main(String[] args) {
+    SpringApplication.run(ConsultoriaApplication.class, args);
+  }
 }

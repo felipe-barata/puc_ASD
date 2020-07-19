@@ -1,0 +1,1 @@
+alter table perfis modify id BIGINT NOT null AUTO_INCREMENT;
