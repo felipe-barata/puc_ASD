@@ -18,6 +18,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
   @Transactional
   @Modifying
   @Query(value = "update usuario set ativo = :inativa where codigo = :codigo", nativeQuery = true)
-  Boolean ativaInativaUsuario(@Param("codigo") Integer codigo, @Param("inativa") Boolean inativa);
+  Integer ativaInativaUsuario(@Param("codigo") Integer codigo, @Param("inativa") Boolean inativa);
 
 }

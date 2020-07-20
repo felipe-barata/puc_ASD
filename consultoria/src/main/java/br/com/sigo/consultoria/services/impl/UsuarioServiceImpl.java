@@ -74,7 +74,7 @@ public class UsuarioServiceImpl implements UsuarioService {
       log.warn("ativaOuInativaUsuario - nao encontrou usuario: {}", usuario);
       throw new UsuarioNaoEncontradoException(usuario);
     }
-    Boolean inativaUsuario = usuarioRepository.ativaInativaUsuario(usuario, !desativar);
+    boolean inativaUsuario = usuarioRepository.ativaInativaUsuario(usuario, !desativar) > 0;
     log.debug("ativaOuInativaUsuario - retorno: {}", inativaUsuario);
     return inativaUsuario;
   }
