@@ -1,8 +1,9 @@
 package br.com.sigo.consultoria.controllers;
 
-import br.com.sigo.consultoria.dtos.CategoriaDTO;
+import br.com.sigo.consultoria.dtos.UsuarioDTO;
+import br.com.sigo.consultoria.dtos.UsuarioEmpresaDTO;
 import br.com.sigo.consultoria.response.Response;
-import br.com.sigo.consultoria.services.CategoriaService;
+import br.com.sigo.consultoria.services.UsuarioEmpresaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,40 +17,50 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
-@RequestMapping("api/categoria")
+@RequestMapping("api/usuarioEmpresa")
 @CrossOrigin(origins = "*")
 @Slf4j
-public class CategoriaController {
+public class UsuarioEmpresaController {
 
   @Autowired
-  private CategoriaService categoriaService;
+  private UsuarioEmpresaService usuarioEmpresaService;
 
-  @PostMapping
   @Secured("ROLE_USUARIO")
-  public ResponseEntity<Response<CategoriaDTO>> atualizarCategoria(@RequestBody @Valid CategoriaDTO dto, BindingResult bindingResult) {
-    Response<CategoriaDTO> response = new Response<>();
+  @PostMapping
+  public ResponseEntity<Response> atribuiUsuarioEmpresa(@RequestBody @NotEmpty(message = "Lista não pode ser vazia") List<@Valid UsuarioEmpresaDTO> lista,
+                                                        BindingResult bindingResult) {
+    Response<UsuarioDTO> response = new Response<>();
     if (bindingResult != null && bindingResult.hasErrors()) {
-      log.warn("atualizarCategoria - erros de validacao");
+      log.warn("atribuiUsuarioEmpresa - erros de validacao");
       response.setErrors(new ArrayList<>());
       bindingResult.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
       return ResponseEntity.badRequest().body(response);
     }
+
     try {
-      CategoriaDTO categoria = categoriaService.atualizaCategoria(dto);
-      if (categoria != null && categoria.getId() > 0) {
-        log.debug("atualizarCategoria - criou/atualizou categoria : {}", dto.getId());
-        response.setData(categoria);
-        return ResponseEntity.ok(response);
+      if (lista == null || lista.isEmpty()) {
+        log.warn("atribuiUsuarioEmpresa - lista vazia");
+        response.setErrors(new ArrayList<>());
+        response.getErrors().add("A lista informada esta vazia");
+        return ResponseEntity.badRequest().body(response);
+      }
+
+      Response<List<UsuarioEmpresaDTO>> listResponse = usuarioEmpresaService.atualizarUsuarioEmpresa(lista);
+      if (listResponse.getErrors().isEmpty()) {
+        return ResponseEntity.ok(listResponse);
+      } else {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(listResponse);
       }
     } catch (Exception e) {
       response.setErrors(new ArrayList<>());
       response.getErrors().add(e.getMessage());
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
-    return ResponseEntity.noContent().build();
   }
 
 }

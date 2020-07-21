@@ -59,7 +59,7 @@ public class UsuarioServiceImpl implements UsuarioService {
       log.warn("atualizar - erro salvar usuario na base de dados");
       throw new ErroAtualizarUsuarioException();
     }
-
+    usuario.setId(u.getId());
     perfisRepository.apagaPerfilUsuario(u.getId());
     Usuario finalU = u;
     List<Perfis> collect = perfis.stream().map(m -> Perfis.builder().perfil(m).usuario(finalU).build()).collect(Collectors.toList());

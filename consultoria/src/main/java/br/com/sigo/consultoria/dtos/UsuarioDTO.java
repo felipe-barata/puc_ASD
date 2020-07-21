@@ -16,6 +16,8 @@ import java.io.Serializable;
 @Builder
 public class UsuarioDTO implements Serializable {
 
+  private int id;
+
   @Min(value = 1, message = "Código inválido")
   private int codigo;
 

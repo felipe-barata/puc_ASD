@@ -47,6 +47,10 @@ public class EmpresaController {
         response.setData(empresa);
         return ResponseEntity.ok(response);
       }
+    } catch (CategoriaNaoEncontradaException e) {
+      response.setErrors(new ArrayList<>());
+      response.getErrors().add(e.getMessage());
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     } catch (Exception e) {
       response.setErrors(new ArrayList<>());
       response.getErrors().add(e.getMessage());
@@ -55,8 +59,9 @@ public class EmpresaController {
     return ResponseEntity.noContent().build();
   }
 
-
-  public ResponseEntity atribuirCategoria(AtribuirCategoriaEmpresaDTO dto, BindingResult bindingResult) {
+  @PostMapping(value = "atribuirCategoria")
+  @Secured("ROLE_USUARIO")
+  public ResponseEntity atribuirCategoria(@RequestBody @Valid AtribuirCategoriaEmpresaDTO dto, BindingResult bindingResult) {
     Response<EmpresaDTO> response = new Response<>();
     if (bindingResult != null && bindingResult.hasErrors()) {
       log.warn("atribuirCategoria - erros de validacao");

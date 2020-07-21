@@ -1,6 +1,8 @@
 package br.com.sigo.consultoria.services.impl;
 
 import br.com.sigo.consultoria.domain.UsuarioEmpresa;
+import br.com.sigo.consultoria.domain.chave.UsuarioEmpresaPK;
+import br.com.sigo.consultoria.dtos.UsuarioEmpresaDTO;
 import br.com.sigo.consultoria.exceptions.ConsultoriaException;
 import br.com.sigo.consultoria.repository.EmpresaRepository;
 import br.com.sigo.consultoria.repository.UsuarioEmpresaRepository;
@@ -29,31 +31,33 @@ public class UsuarioEmpresaServiceImpl implements UsuarioEmpresaService {
   private UsuarioEmpresaRepository usuarioEmpresaRepository;
 
   @Override
-  public Response<List<UsuarioEmpresa>> atualizarUsuarioEmpresa(List<UsuarioEmpresa> list) throws ConsultoriaException {
-    Response<List<UsuarioEmpresa>> response = new Response<>();
+  public Response<List<UsuarioEmpresaDTO>> atualizarUsuarioEmpresa(List<UsuarioEmpresaDTO> list) throws ConsultoriaException {
+    Response<List<UsuarioEmpresaDTO>> response = new Response<>();
     response.setErrors(new ArrayList<>());
     response.setData(new ArrayList<>());
     log.info("atualizarUsuarioEmpresa");
     try {
-      for (UsuarioEmpresa user : list) {
+      for (UsuarioEmpresaDTO user : list) {
         boolean inserir = true;
-        if (usuarioRepository.findById(user.getUsuarioId()).isEmpty()) {
-          String message = MessageFormat.format("usuario com ID: {0} nao encontrado", user.getUsuarioId());
+        if (usuarioRepository.findById(user.getIdUsuario()).isEmpty()) {
+          String message = MessageFormat.format("usuario com ID: {0} nao encontrado", user.getIdUsuario());
           response.getErrors().add(message);
           log.warn("atualizarUsuarioEmpresa - {}", message);
           inserir = false;
         }
 
-        if (empresaRepository.findById(user.getEmpresaId()).isEmpty()) {
-          String message = MessageFormat.format("empresa com ID: {} nao encontrada", user.getEmpresaId());
+        if (empresaRepository.findById(user.getIdEmpresa()).isEmpty()) {
+          String message = MessageFormat.format("empresa com ID: {0} nao encontrada", user.getIdEmpresa());
           response.getErrors().add(message);
           log.warn("atualizarUsuarioEmpresa - {}", message);
           inserir = false;
         }
 
         if (inserir) {
-          log.debug("atualizarUsuarioEmpresa - inserir usuario: {} e empresa: {}", user.getUsuarioId(), user.getEmpresaId());
-          usuarioEmpresaRepository.save(user);
+          log.debug("atualizarUsuarioEmpresa - inserir usuario: {} e empresa: {}", user.getIdUsuario(), user.getIdEmpresa());
+          usuarioEmpresaRepository.save(UsuarioEmpresa.builder().
+              chave(UsuarioEmpresaPK.builder().
+                  empresaId(user.getIdEmpresa()).usuarioId(user.getIdUsuario()).build()).build());
           response.getData().add(user);
         }
       }

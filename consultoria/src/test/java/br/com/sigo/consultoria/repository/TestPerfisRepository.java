@@ -3,9 +3,8 @@ package br.com.sigo.consultoria.repository;
 import br.com.sigo.consultoria.domain.Perfis;
 import br.com.sigo.consultoria.domain.Usuario;
 import br.com.sigo.consultoria.enums.PerfilEnum;
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,31 +30,27 @@ public class TestPerfisRepository {
   @Autowired
   private UsuarioRepository usuarioRepository;
 
-  @BeforeAll
-  public void setUp() {
-    Usuario u = getUsuario(CODIGO_1);
-    Usuario u2 = getUsuario(CODIGO_2);
-    usuarioRepository.save(u);
-    usuarioRepository.save(u2);
-    perfisRepository.save(getPerfil(u, PerfilEnum.ROLE_USUARIO));
-    perfisRepository.save(getPerfil(u, PerfilEnum.ROLE_ADMIN));
-    perfisRepository.save(getPerfil(u2, PerfilEnum.ROLE_USUARIO));
-    perfisRepository.save(getPerfil(u2, PerfilEnum.ROLE_ADMIN));
-  }
-
   @Test
   public void testRetornaPerfisUsuario() {
+    Usuario u = getUsuario(CODIGO_1);
+    usuarioRepository.save(u);
+    perfisRepository.save(getPerfil(u, PerfilEnum.ROLE_USUARIO));
+    perfisRepository.save(getPerfil(u, PerfilEnum.ROLE_ADMIN));
     List<Perfis> perfis = perfisRepository.retornaPerfisUsuario(CODIGO_1);
     Assertions.assertFalse(perfis.isEmpty());
   }
 
   @Test
   public void testApagaPerfilUsuario() {
+    Usuario u2 = getUsuario(CODIGO_2);
+    usuarioRepository.save(u2);
+    perfisRepository.save(getPerfil(u2, PerfilEnum.ROLE_USUARIO));
+    perfisRepository.save(getPerfil(u2, PerfilEnum.ROLE_ADMIN));
     perfisRepository.apagaPerfilUsuario(CODIGO_2);
-    Assertions.assertTrue(perfisRepository.findAll().size() == 2);
+    Assertions.assertTrue(perfisRepository.findAll().isEmpty());
   }
 
-  @AfterAll
+  @AfterEach
   public final void tearDown() {
     perfisRepository.deleteAll();
     usuarioRepository.deleteAll();

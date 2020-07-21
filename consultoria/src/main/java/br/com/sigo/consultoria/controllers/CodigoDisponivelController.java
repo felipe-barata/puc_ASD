@@ -24,7 +24,7 @@ public class CodigoDisponivelController {
     log.info("verificaCodigoUsuario - codigo: {}", codigo);
     if (usuarioService.buscarUsername(codigo).isPresent()) {
       log.debug("verificaCodigoUsuario - codigo ja existe: {}", codigo);
-      ResponseEntity.ok();
+      return ResponseEntity.ok().build();
     }
     return ResponseEntity.noContent().build();
   }
