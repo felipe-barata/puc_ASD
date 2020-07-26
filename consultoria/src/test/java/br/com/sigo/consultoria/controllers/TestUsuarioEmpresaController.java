@@ -1,9 +1,11 @@
 package br.com.sigo.consultoria.controllers;
 
 import br.com.sigo.consultoria.dtos.UsuarioEmpresaDTO;
+import br.com.sigo.consultoria.response.Response;
 import br.com.sigo.consultoria.services.UsuarioEmpresaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -54,20 +56,24 @@ public class TestUsuarioEmpresaController {
 
   @Test
   @WithMockUser(roles = "USUARIO")
-  public void testAtribuiUsuarioErro() throws Exception {
-    mvc.perform(MockMvcRequestBuilders.post(URL)
-        .content(objectMapper.writeValueAsString(new ArrayList<>()))
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isInternalServerError());
-  }
-
-  @Test
-  @WithMockUser(roles = "USUARIO")
   public void testAtribuiUsuarioErroValidacao() throws Exception {
     mvc.perform(MockMvcRequestBuilders.post(URL)
         .content(objectMapper.writeValueAsString(new ArrayList<>()))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  @WithMockUser(roles = "USUARIO")
+  public void testAtribuiUsuarioVaiPassar() throws Exception {
+    Response<List<UsuarioEmpresaDTO>> response = new Response<>();
+    response.setData(getLista());
+    BDDMockito.given(usuarioEmpresaService.atualizarUsuarioEmpresa(getLista())).willReturn(response);
+
+    mvc.perform(MockMvcRequestBuilders.post(URL)
+        .content(objectMapper.writeValueAsString(getLista()))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
   }
 
   private List<UsuarioEmpresaDTO> getLista() {

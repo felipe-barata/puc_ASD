@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class JwtAuthenticationDto {
 
-  @Min(value = 1, message = "Código inválido")
+  @Min(value = 0, message = "Código inválido")
   private Integer codigo;
 
   @NotBlank(message = "Senha não pode ser vazia")

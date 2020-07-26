@@ -54,7 +54,7 @@ public class UsuarioController {
   }
 
   @Secured("ROLE_ADMIN")
-  @PutMapping(value = "ativaOuInativa")
+  @PutMapping(value = "admin/ativaOuInativa")
   public ResponseEntity ativaOuinativaUsuario(@RequestBody @Valid AtivaOuInativaUsuarioDTO dto, BindingResult bindingResult) {
     Response<UsuarioDTO> response = new Response<>();
     if (bindingResult != null && bindingResult.hasErrors()) {
@@ -82,7 +82,7 @@ public class UsuarioController {
   }
 
   @Secured("ROLE_USUARIO")
-  @PutMapping(value = "admin/ativaOuInativa")
+  @PutMapping(value = "ativaOuInativa")
   public ResponseEntity ativaOuinativaConsultor(@RequestBody @Valid AtivaOuInativaUsuarioDTO dto, BindingResult bindingResult) {
     Response<UsuarioDTO> response = new Response<>();
     if (bindingResult != null && bindingResult.hasErrors()) {

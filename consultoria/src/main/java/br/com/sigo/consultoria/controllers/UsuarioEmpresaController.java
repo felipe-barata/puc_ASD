@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class UsuarioEmpresaController {
 
   @Secured("ROLE_USUARIO")
   @PostMapping
-  public ResponseEntity<Response> atribuiUsuarioEmpresa(@RequestBody @NotEmpty(message = "Lista não pode ser vazia") List<@Valid UsuarioEmpresaDTO> lista,
+  public ResponseEntity<Response> atribuiUsuarioEmpresa(@RequestBody @Valid List<@Valid UsuarioEmpresaDTO> lista,
                                                         BindingResult bindingResult) {
     Response<UsuarioDTO> response = new Response<>();
     if (bindingResult != null && bindingResult.hasErrors()) {
@@ -51,7 +50,7 @@ public class UsuarioEmpresaController {
       }
 
       Response<List<UsuarioEmpresaDTO>> listResponse = usuarioEmpresaService.atualizarUsuarioEmpresa(lista);
-      if (listResponse.getErrors().isEmpty()) {
+      if (listResponse.getErrors() == null || listResponse.getErrors().isEmpty()) {
         return ResponseEntity.ok(listResponse);
       } else {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(listResponse);

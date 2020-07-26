@@ -1,5 +1,6 @@
 package br.com.sigo.consultoria.security.controllers;
 
+import br.com.sigo.consultoria.enums.PerfilEnum;
 import br.com.sigo.consultoria.response.Response;
 import br.com.sigo.consultoria.security.dto.JwtAuthenticationDto;
 import br.com.sigo.consultoria.security.dto.TokenDto;
@@ -24,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -59,19 +63,24 @@ public class AuthenticationController {
     Response<TokenDto> response = new Response<TokenDto>();
 
     if (result.hasErrors()) {
-      log.error("Erro validando usuario: {}", result.getAllErrors());
+      log.error("gerarTokenJwt - Erro validando usuario: {}", result.getAllErrors());
+      response.setErrors(new ArrayList<>());
       result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
       return ResponseEntity.badRequest().body(response);
     }
 
-    log.info("Gerando token para o codigo {}.", authenticationDto.getCodigo());
+    log.info("gerarTokenJwt - Gerando token para o codigo {}.", authenticationDto.getCodigo());
     Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
         authenticationDto.getCodigo(), authenticationDto.getSenha()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
     UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(authenticationDto.getCodigo()));
+
+    List<PerfilEnum> perfis = new ArrayList<>();
+    userDetails.getAuthorities().forEach(auth -> perfis.add(PerfilEnum.valueOf(auth.getAuthority())));
+
     String token = jwtTokenUtil.obterToken(userDetails);
-    response.setData(new TokenDto(token));
+    response.setData(new TokenDto(token, perfis));
 
     return ResponseEntity.ok(response);
   }
@@ -84,26 +93,47 @@ public class AuthenticationController {
    */
   @PostMapping(value = "/refresh")
   public ResponseEntity<Response<TokenDto>> gerarRefreshTokenJwt(HttpServletRequest request) {
-    log.info("Gerando refresh token JWT.");
+    log.info("gerarRefreshTokenJwt - Gerando refresh token JWT.");
     Response<TokenDto> response = new Response<TokenDto>();
     Optional<String> token = Optional.ofNullable(request.getHeader(TOKEN_HEADER));
+
+    List<String> erros = new ArrayList<>();
 
     if (token.isPresent() && token.get().startsWith(BEARER_PREFIX)) {
       token = Optional.of(token.get().substring(7));
     }
 
-    if (!token.isPresent()) {
-      response.getErrors().add("Token não informado.");
+    if (token.isEmpty()) {
+      log.warn("gerarRefreshTokenJwt - token nao informado");
+      erros.add("Token não informado.");
     } else if (!jwtTokenUtil.tokenValido(token.get())) {
-      response.getErrors().add("Token inválido ou expirado.");
+      log.warn("gerarRefreshTokenJwt - token inválido ou expirado");
+      erros.add("Token inválido ou expirado.");
     }
 
-    if (!response.getErrors().isEmpty()) {
+    List<PerfilEnum> perfis = new ArrayList<>();
+
+    String usernameFromToken = jwtTokenUtil.getUsernameFromToken(token.orElse(""));
+    if (usernameFromToken == null || usernameFromToken.trim().isEmpty()) {
+      log.warn("gerarRefreshTokenJwt - username nao encontrado");
+      erros.add("Username não encontrado no token");
+    } else {
+      UserDetails userDetails = userDetailsService.loadUserByUsername(usernameFromToken);
+      if (userDetails != null) {
+        userDetails.getAuthorities().forEach(auth -> perfis.add(PerfilEnum.valueOf(auth.getAuthority())));
+      } else {
+        log.warn("gerarRefreshTokenJwt - usuario {} nao encontrado", usernameFromToken);
+        erros.add(MessageFormat.format("Usuario: {0} não encontrado", usernameFromToken));
+      }
+    }
+
+    if (!erros.isEmpty()) {
+      response.setErrors(erros);
       return ResponseEntity.badRequest().body(response);
     }
 
     String refreshedToken = jwtTokenUtil.refreshToken(token.get());
-    response.setData(new TokenDto(refreshedToken));
+    response.setData(new TokenDto(refreshedToken, perfis));
     return ResponseEntity.ok(response);
   }
 

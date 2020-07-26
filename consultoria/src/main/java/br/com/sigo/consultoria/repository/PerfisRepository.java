@@ -16,8 +16,8 @@ public interface PerfisRepository extends JpaRepository<Perfis, Long> {
   @Query(value = "select * from perfis where usuario_id = :usuario", nativeQuery = true)
   List<Perfis> retornaPerfisUsuario(@Param(value = "usuario") Integer codigoUsuario);
 
-  @Modifying
   @Transactional
+  @Modifying
   @Query(value = "delete from perfis where usuario_id = :usuario", nativeQuery = true)
-  void apagaPerfilUsuario(@Param(value = "usuario") Integer codigoUsuario);
+  Integer apagaPerfilUsuario(@Param(value = "usuario") Integer codigoUsuario);
 }

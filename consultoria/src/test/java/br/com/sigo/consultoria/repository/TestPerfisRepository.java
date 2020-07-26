@@ -46,7 +46,8 @@ public class TestPerfisRepository {
     usuarioRepository.save(u2);
     perfisRepository.save(getPerfil(u2, PerfilEnum.ROLE_USUARIO));
     perfisRepository.save(getPerfil(u2, PerfilEnum.ROLE_ADMIN));
-    perfisRepository.apagaPerfilUsuario(CODIGO_2);
+    Integer integer = perfisRepository.apagaPerfilUsuario(CODIGO_2);
+    System.err.println("APAGOOOU: " + integer);
     Assertions.assertTrue(perfisRepository.findAll().isEmpty());
   }
 
