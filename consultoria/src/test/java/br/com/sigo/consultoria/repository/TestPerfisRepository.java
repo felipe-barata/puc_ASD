@@ -36,7 +36,7 @@ public class TestPerfisRepository {
     usuarioRepository.save(u);
     perfisRepository.save(getPerfil(u, PerfilEnum.ROLE_USUARIO));
     perfisRepository.save(getPerfil(u, PerfilEnum.ROLE_ADMIN));
-    List<Perfis> perfis = perfisRepository.retornaPerfisUsuario(CODIGO_1);
+    List<Perfis> perfis = perfisRepository.retornaPerfisUsuario(u.getId());
     Assertions.assertFalse(perfis.isEmpty());
   }
 
@@ -46,7 +46,7 @@ public class TestPerfisRepository {
     usuarioRepository.save(u2);
     perfisRepository.save(getPerfil(u2, PerfilEnum.ROLE_USUARIO));
     perfisRepository.save(getPerfil(u2, PerfilEnum.ROLE_ADMIN));
-    Integer integer = perfisRepository.apagaPerfilUsuario(CODIGO_2);
+    Integer integer = perfisRepository.apagaPerfilUsuario(u2.getId());
     System.err.println("APAGOOOU: " + integer);
     Assertions.assertTrue(perfisRepository.findAll().isEmpty());
   }
