@@ -13,8 +13,13 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -46,6 +51,17 @@ public class TestCategoriaService {
     BDDMockito.when(this.categoriaRepository.findById(1)).thenReturn(Optional.of(Categoria.builder().id(1).build()));
     CategoriaDTO categoriaDTO = categoriaService.atualizaCategoria(getDTO());
     Assertions.assertTrue(categoriaDTO.getId() > 0);
+  }
+
+  @Test
+  public void testRetornarTodasCategorias() {
+    List<Categoria> c = new ArrayList<>();
+    c.add(new Categoria());
+    Page<Categoria> pages = new PageImpl<>(c);
+    PageRequest pageRequest = PageRequest.of(1, 1);
+    BDDMockito.when(categoriaRepository.findAll(pageRequest)).thenReturn(pages);
+
+    Assertions.assertFalse(categoriaService.retornarTodasCategorias(PageRequest.of(1, 1)).isEmpty());
   }
 
   private CategoriaDTO getDTO() {

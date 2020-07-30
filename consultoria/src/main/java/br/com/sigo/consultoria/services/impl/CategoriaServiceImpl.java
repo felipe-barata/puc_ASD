@@ -7,6 +7,8 @@ import br.com.sigo.consultoria.repository.CategoriaRepository;
 import br.com.sigo.consultoria.services.CategoriaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -34,6 +36,12 @@ public class CategoriaServiceImpl implements CategoriaService {
       log.error("atualizaCategoria - erro: ", e);
       throw new ConsultoriaException(e.getMessage());
     }
+  }
+
+  @Override
+  public Page<Categoria> retornarTodasCategorias(Pageable pageable) {
+    log.info("retornarTodasCategorias - page: {}, size: {}", pageable.getPageNumber(), pageable.getPageSize());
+    return categoriaRepository.findAll(pageable);
   }
 
 }

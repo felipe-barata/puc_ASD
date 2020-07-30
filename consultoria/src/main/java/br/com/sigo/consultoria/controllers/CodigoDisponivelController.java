@@ -1,6 +1,9 @@
 package br.com.sigo.consultoria.controllers;
 
 import br.com.sigo.consultoria.services.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +22,12 @@ public class CodigoDisponivelController {
   @Autowired
   private UsuarioService usuarioService;
 
-  @GetMapping
+  @Operation(summary = "Verifica se o código informado está atribuido a um usuário")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Código pertence a um usuário"),
+      @ApiResponse(responseCode = "204", description = "Código não pertence a um usuário")
+  })
+  @GetMapping(produces = "application/json", consumes = "application/json")
   public ResponseEntity verificaCodigoUsuario(@RequestParam("codigo") String codigo) {
     log.info("verificaCodigoUsuario - codigo: {}", codigo);
     if (usuarioService.buscarUsername(codigo).isPresent()) {

@@ -1,6 +1,7 @@
 package br.com.sigo.consultoria.controllers;
 
 import br.com.sigo.consultoria.dtos.AtivaOuInativaUsuarioDTO;
+import br.com.sigo.consultoria.dtos.ConsultarUsuarioDTO;
 import br.com.sigo.consultoria.dtos.UsuarioDTO;
 import br.com.sigo.consultoria.enums.PerfilEnum;
 import br.com.sigo.consultoria.exceptions.ErroAtualizarUsuarioException;
@@ -10,11 +11,13 @@ import br.com.sigo.consultoria.response.Response;
 import br.com.sigo.consultoria.services.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,25 +39,25 @@ public class UsuarioController {
   private UsuarioService usuarioService;
 
   @Secured("ROLE_USUARIO")
-  @PostMapping
+  @PostMapping(produces = "application/json", consumes = "application/json")
   public ResponseEntity<Response<UsuarioDTO>> atualizaUsuarioSistema(@RequestBody @Valid UsuarioDTO dto, BindingResult bindingResult) {
     return executaAtualizacaoUsuario(dto, Arrays.asList(PerfilEnum.ROLE_USUARIO), bindingResult);
   }
 
   @Secured("ROLE_USUARIO")
-  @PostMapping(value = "consultor")
+  @PostMapping(value = "consultor", produces = "application/json", consumes = "application/json")
   public ResponseEntity<Response<UsuarioDTO>> atualizaConsultor(@RequestBody @Valid UsuarioDTO dto, BindingResult bindingResult) {
     return executaAtualizacaoUsuario(dto, Arrays.asList(PerfilEnum.ROLE_CONSULTOR), bindingResult);
   }
 
   @Secured("ROLE_ADMIN")
-  @PostMapping(value = "admin")
+  @PostMapping(value = "admin", produces = "application/json", consumes = "application/json")
   public ResponseEntity<Response<UsuarioDTO>> atualizaAdmin(@RequestBody @Valid UsuarioDTO dto, BindingResult bindingResult) {
-    return executaAtualizacaoUsuario(dto, Arrays.asList(PerfilEnum.ROLE_ADMIN, PerfilEnum.ROLE_USUARIO), bindingResult);
+    return executaAtualizacaoUsuario(dto, Arrays.asList(PerfilEnum.ROLE_ADMIN, PerfilEnum.ROLE_USUARIO, PerfilEnum.ROLE_CONSULTOR), bindingResult);
   }
 
   @Secured("ROLE_ADMIN")
-  @PutMapping(value = "admin/ativaOuInativa")
+  @PutMapping(value = "admin/ativaOuInativa", produces = "application/json", consumes = "application/json")
   public ResponseEntity ativaOuinativaUsuario(@RequestBody @Valid AtivaOuInativaUsuarioDTO dto, BindingResult bindingResult) {
     Response<UsuarioDTO> response = new Response<>();
     if (bindingResult != null && bindingResult.hasErrors()) {
@@ -82,7 +85,7 @@ public class UsuarioController {
   }
 
   @Secured("ROLE_USUARIO")
-  @PutMapping(value = "ativaOuInativa")
+  @PutMapping(value = "ativaOuInativa", produces = "application/json", consumes = "application/json")
   public ResponseEntity ativaOuinativaConsultor(@RequestBody @Valid AtivaOuInativaUsuarioDTO dto, BindingResult bindingResult) {
     Response<UsuarioDTO> response = new Response<>();
     if (bindingResult != null && bindingResult.hasErrors()) {
@@ -107,6 +110,24 @@ public class UsuarioController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
     return ResponseEntity.noContent().build();
+  }
+
+  @Secured("ROLE_USUARIO")
+  @GetMapping(produces = "application/json", consumes = "application/json")
+  public ResponseEntity<Response<Page<UsuarioDTO>>> listarUsuarios(@RequestBody @Valid ConsultarUsuarioDTO dto, BindingResult bindingResult) {
+    return ResponseEntity.ok().build();
+  }
+
+  @Secured("ROLE_USUARIO")
+  @GetMapping(value = "consultor", produces = "application/json", consumes = "application/json")
+  public ResponseEntity<Response<Page<UsuarioDTO>>> listarConsultor(@RequestBody @Valid ConsultarUsuarioDTO dto, BindingResult bindingResult) {
+    return ResponseEntity.ok().build();
+  }
+
+  @Secured("ROLE_ADMIN")
+  @GetMapping(value = "admin", produces = "application/json", consumes = "application/json")
+  public ResponseEntity<Response<Page<UsuarioDTO>>> listarAdmin(@RequestBody @Valid ConsultarUsuarioDTO dto, BindingResult bindingResult) {
+    return ResponseEntity.ok().build();
   }
 
   private ResponseEntity<Response<UsuarioDTO>> executaAtualizacaoUsuario(UsuarioDTO dto, List<PerfilEnum> perfil, BindingResult bindingResult) {
