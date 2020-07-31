@@ -36,6 +36,9 @@ public class Documentos implements Serializable {
 
   private LocalDate data;
 
+  @Column(name = "nome_arquivo")
+  private String nomeArquivo;
+
   @Lob
   @Column(columnDefinition = "BLOB")
   private byte[] documento;

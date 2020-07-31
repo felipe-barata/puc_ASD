@@ -59,6 +59,11 @@ public class TestNormaService {
       public String getNorma() {
         return "teste";
       }
+
+      @Override
+      public Integer getId() {
+        return 1;
+      }
     });
     Page<NormaProjection> pages = new PageImpl<>(c);
     Sort.Direction direction = Sort.Direction.fromString(SORT);

@@ -6,21 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NormasDTO implements Serializable {
+@Builder
+public class DetalheNormaDTO implements Serializable {
 
-  private String categoria;
-
-  private String tipo;
-
+  private int id;
+  private int categoria;
+  private String descCategoria;
+  private int tipo;
+  private String descTipo;
   private String titulo;
-
   private String norma;
 
-  private Integer idNorma;
+  private List<DocumentoNormaDTO> documentos;
 
 }

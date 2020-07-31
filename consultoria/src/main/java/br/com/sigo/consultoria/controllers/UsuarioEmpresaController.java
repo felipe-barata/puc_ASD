@@ -4,6 +4,11 @@ import br.com.sigo.consultoria.dtos.UsuarioDTO;
 import br.com.sigo.consultoria.dtos.UsuarioEmpresaDTO;
 import br.com.sigo.consultoria.response.Response;
 import br.com.sigo.consultoria.services.UsuarioEmpresaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,8 +34,15 @@ public class UsuarioEmpresaController {
   @Autowired
   private UsuarioEmpresaService usuarioEmpresaService;
 
+  @Operation(summary = "Atribuir usuarios a empresas")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Sucesso"),
+      @ApiResponse(responseCode = "206", description = "Alguns registros não foram processados"),
+      @ApiResponse(responseCode = "400", description = "Ocorreram erros de validação", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor", content = @Content(schema = @Schema(implementation = Response.class)))
+  })
   @Secured("ROLE_USUARIO")
-  @PostMapping
+  @PostMapping(produces = "application/json", consumes = "application/json")
   public ResponseEntity<Response> atribuiUsuarioEmpresa(@RequestBody @Valid List<@Valid UsuarioEmpresaDTO> lista,
                                                         BindingResult bindingResult) {
     Response<UsuarioDTO> response = new Response<>();
@@ -53,7 +65,7 @@ public class UsuarioEmpresaController {
       if (listResponse.getErrors() == null || listResponse.getErrors().isEmpty()) {
         return ResponseEntity.ok(listResponse);
       } else {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(listResponse);
+        return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(listResponse);
       }
     } catch (Exception e) {
       response.setErrors(new ArrayList<>());

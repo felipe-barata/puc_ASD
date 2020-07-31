@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NormaRepository extends JpaRepository<Norma, Integer> {
 
-  @Query(value = "select c.descricao categoria, t.descricao tipo, n.titulo, n.norma from norma n inner join categoria_norma c on (n.categoria_norma_id = c.id) inner join tipo_norma t on (n.tipo_norma_id = t.id)", nativeQuery = true, countQuery = "select count(n.norma) from norma n inner join categoria_norma c on (n.categoria_norma_id = c.id) inner join tipo_norma t on (n.tipo_norma_id = t.id)")
+  @Query(value = "select c.descricao categoria, t.descricao tipo, n.titulo, n.norma, n.id from norma n inner join categoria_norma c on (n.categoria_norma_id = c.id) inner join tipo_norma t on (n.tipo_norma_id = t.id)", nativeQuery = true, countQuery = "select count(n.norma) from norma n inner join categoria_norma c on (n.categoria_norma_id = c.id) inner join tipo_norma t on (n.tipo_norma_id = t.id)")
   Page<NormaProjection> selectTodasNormas(Pageable pageable);
 
 }

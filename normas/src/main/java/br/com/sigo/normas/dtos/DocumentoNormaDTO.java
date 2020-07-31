@@ -6,21 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NormasDTO implements Serializable {
+@Builder
+public class DocumentoNormaDTO implements Serializable {
 
-  private String categoria;
+  private int id;
 
-  private String tipo;
+  private String referencia;
 
-  private String titulo;
+  private LocalDate data;
 
-  private String norma;
-
-  private Integer idNorma;
+  private String arquivo;
 
 }

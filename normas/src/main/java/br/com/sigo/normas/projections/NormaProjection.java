@@ -10,4 +10,5 @@ public interface NormaProjection {
 
   String getNorma();
 
+  Integer getId();
 }

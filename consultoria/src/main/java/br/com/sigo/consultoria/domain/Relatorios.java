@@ -32,6 +32,9 @@ public class Relatorios implements Serializable {
 
   private Integer versao;
 
+  @Column(name = "nome_arquivo")
+  private String nomeArquivo;
+
   @Lob
   @Column(columnDefinition = "BLOB")
   private byte[] documento;

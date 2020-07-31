@@ -9,6 +9,11 @@ import br.com.sigo.consultoria.exceptions.ErroCodigoUsuarioOutroPerfilException;
 import br.com.sigo.consultoria.exceptions.UsuarioNaoEncontradoException;
 import br.com.sigo.consultoria.response.Response;
 import br.com.sigo.consultoria.services.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,24 +43,52 @@ public class UsuarioController {
   @Autowired
   private UsuarioService usuarioService;
 
+  @Operation(summary = "Inserir ou atualizar um usuário no sistema")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Usuário inserido/atualizado"),
+      @ApiResponse(responseCode = "409", description = "O código informado existe para outro usuário", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "400", description = "Ocorreram erros de validação", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor", content = @Content(schema = @Schema(implementation = Response.class)))
+  })
   @Secured("ROLE_USUARIO")
   @PostMapping(produces = "application/json", consumes = "application/json")
   public ResponseEntity<Response<UsuarioDTO>> atualizaUsuarioSistema(@RequestBody @Valid UsuarioDTO dto, BindingResult bindingResult) {
     return executaAtualizacaoUsuario(dto, Arrays.asList(PerfilEnum.ROLE_USUARIO), bindingResult);
   }
 
+  @Operation(summary = "Inserir ou atualizar um consultor")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Consultor inserido/atualizado"),
+      @ApiResponse(responseCode = "409", description = "O código informado existe para outro usuário", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "400", description = "Ocorreram erros de validação", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor", content = @Content(schema = @Schema(implementation = Response.class)))
+  })
   @Secured("ROLE_USUARIO")
   @PostMapping(value = "consultor", produces = "application/json", consumes = "application/json")
   public ResponseEntity<Response<UsuarioDTO>> atualizaConsultor(@RequestBody @Valid UsuarioDTO dto, BindingResult bindingResult) {
     return executaAtualizacaoUsuario(dto, Arrays.asList(PerfilEnum.ROLE_CONSULTOR), bindingResult);
   }
 
+  @Operation(summary = "Inserir ou atualizar um administrador no sistema")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Administrador inserido/atualizado"),
+      @ApiResponse(responseCode = "409", description = "O código informado existe para outro usuário", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "400", description = "Ocorreram erros de validação", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor", content = @Content(schema = @Schema(implementation = Response.class)))
+  })
   @Secured("ROLE_ADMIN")
   @PostMapping(value = "admin", produces = "application/json", consumes = "application/json")
   public ResponseEntity<Response<UsuarioDTO>> atualizaAdmin(@RequestBody @Valid UsuarioDTO dto, BindingResult bindingResult) {
     return executaAtualizacaoUsuario(dto, Arrays.asList(PerfilEnum.ROLE_ADMIN, PerfilEnum.ROLE_USUARIO, PerfilEnum.ROLE_CONSULTOR), bindingResult);
   }
 
+  @Operation(summary = "Ativar/Inativar um usuário")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Usuário ativado/inativado"),
+      @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "400", description = "Ocorreram erros de validação", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor", content = @Content(schema = @Schema(implementation = Response.class)))
+  })
   @Secured("ROLE_ADMIN")
   @PutMapping(value = "admin/ativaOuInativa", produces = "application/json", consumes = "application/json")
   public ResponseEntity ativaOuinativaUsuario(@RequestBody @Valid AtivaOuInativaUsuarioDTO dto, BindingResult bindingResult) {
@@ -84,6 +117,13 @@ public class UsuarioController {
     return ResponseEntity.noContent().build();
   }
 
+  @Operation(summary = "Ativar/Inativar um consultor")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Consultor ativado/inativado"),
+      @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "400", description = "Ocorreram erros de validação", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor", content = @Content(schema = @Schema(implementation = Response.class)))
+  })
   @Secured("ROLE_USUARIO")
   @PutMapping(value = "ativaOuInativa", produces = "application/json", consumes = "application/json")
   public ResponseEntity ativaOuinativaConsultor(@RequestBody @Valid AtivaOuInativaUsuarioDTO dto, BindingResult bindingResult) {
@@ -112,18 +152,39 @@ public class UsuarioController {
     return ResponseEntity.noContent().build();
   }
 
+  @Operation(summary = "Listar usuários cadastrados")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Retornou usuários"),
+      @ApiResponse(responseCode = "204", description = "Nenhum usuário encontrado", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "400", description = "Ocorreram erros de validação", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor", content = @Content(schema = @Schema(implementation = Response.class)))
+  })
   @Secured("ROLE_USUARIO")
   @GetMapping(produces = "application/json", consumes = "application/json")
   public ResponseEntity<Response<Page<UsuarioDTO>>> listarUsuarios(@RequestBody @Valid ConsultarUsuarioDTO dto, BindingResult bindingResult) {
     return ResponseEntity.ok().build();
   }
 
+  @Operation(summary = "Listar consultores cadastrados")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Retornou consultores"),
+      @ApiResponse(responseCode = "204", description = "Nenhum consultor encontrado", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "400", description = "Ocorreram erros de validação", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor", content = @Content(schema = @Schema(implementation = Response.class)))
+  })
   @Secured("ROLE_USUARIO")
   @GetMapping(value = "consultor", produces = "application/json", consumes = "application/json")
   public ResponseEntity<Response<Page<UsuarioDTO>>> listarConsultor(@RequestBody @Valid ConsultarUsuarioDTO dto, BindingResult bindingResult) {
     return ResponseEntity.ok().build();
   }
 
+  @Operation(summary = "Listar administradores cadastrados")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Retornou administradores"),
+      @ApiResponse(responseCode = "204", description = "Nenhum administrador encontrado", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "400", description = "Ocorreram erros de validação", content = @Content(schema = @Schema(implementation = Response.class))),
+      @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor", content = @Content(schema = @Schema(implementation = Response.class)))
+  })
   @Secured("ROLE_ADMIN")
   @GetMapping(value = "admin", produces = "application/json", consumes = "application/json")
   public ResponseEntity<Response<Page<UsuarioDTO>>> listarAdmin(@RequestBody @Valid ConsultarUsuarioDTO dto, BindingResult bindingResult) {

@@ -1,0 +1,1 @@
+alter table relatorios add nome_arquivo varchar(50) ;

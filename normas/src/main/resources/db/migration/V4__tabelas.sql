@@ -1,0 +1,1 @@
+alter table documentos add nome_arquivo varchar(50);

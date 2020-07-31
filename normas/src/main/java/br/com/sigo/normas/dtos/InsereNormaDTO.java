@@ -9,18 +9,13 @@ import java.io.Serializable;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class NormasDTO implements Serializable {
+@AllArgsConstructor
+public class InsereNormaDTO implements Serializable {
 
-  private String categoria;
-
-  private String tipo;
-
+  private int id;
+  private int categoria;
+  private int tipo;
   private String titulo;
-
   private String norma;
-
-  private Integer idNorma;
-
 }

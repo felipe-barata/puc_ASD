@@ -11,16 +11,8 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NormasDTO implements Serializable {
+public class DownloadNormaDTO implements Serializable {
 
-  private String categoria;
-
-  private String tipo;
-
-  private String titulo;
-
-  private String norma;
-
-  private Integer idNorma;
+  private byte[] arquivo;
 
 }

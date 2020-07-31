@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class TestNormaController {
 
-  private static final String URL = "/api/norma";
+  private static final String URL = "/api/norma/consultarNormas";
 
   private static final int SIZE = 1;
   private static final String ORDENACAO = "DESC";
@@ -152,6 +152,11 @@ public class TestNormaController {
       @Override
       public String getNorma() {
         return NORMA;
+      }
+
+      @Override
+      public Integer getId() {
+        return 1;
       }
     };
   }
