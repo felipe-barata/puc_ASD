@@ -12,12 +12,14 @@ public class JwtUser implements UserDetails {
   private Long id;
   private String username;
   private String password;
+  private String displayName;
   private Collection<? extends GrantedAuthority> authorities;
 
-  public JwtUser(Long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+  public JwtUser(Long id, String username, String password, String displayName, Collection<? extends GrantedAuthority> authorities) {
     this.id = id;
     this.username = username;
     this.password = password;
+    this.displayName = displayName;
     this.authorities = authorities;
   }
 
@@ -60,4 +62,7 @@ public class JwtUser implements UserDetails {
     return true;
   }
 
+  public String getDisplayName() {
+    return displayName;
+  }
 }

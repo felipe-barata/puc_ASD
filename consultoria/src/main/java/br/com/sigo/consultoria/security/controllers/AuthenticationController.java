@@ -2,6 +2,7 @@ package br.com.sigo.consultoria.security.controllers;
 
 import br.com.sigo.consultoria.enums.PerfilEnum;
 import br.com.sigo.consultoria.response.Response;
+import br.com.sigo.consultoria.security.JwtUser;
 import br.com.sigo.consultoria.security.dto.JwtAuthenticationDto;
 import br.com.sigo.consultoria.security.dto.TokenDto;
 import br.com.sigo.consultoria.security.utils.JwtTokenUtil;
@@ -14,7 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -74,13 +74,13 @@ public class AuthenticationController {
         authenticationDto.getCodigo(), authenticationDto.getSenha()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(authenticationDto.getCodigo()));
+    JwtUser userDetails = (JwtUser) userDetailsService.loadUserByUsername(String.valueOf(authenticationDto.getCodigo()));
 
     List<PerfilEnum> perfis = new ArrayList<>();
     userDetails.getAuthorities().forEach(auth -> perfis.add(PerfilEnum.valueOf(auth.getAuthority())));
 
     String token = jwtTokenUtil.obterToken(userDetails);
-    response.setData(new TokenDto(token, perfis));
+    response.setData(new TokenDto(token, userDetails.getUsername(), userDetails.getDisplayName(), perfis));
 
     return ResponseEntity.ok(response);
   }
@@ -112,15 +112,19 @@ public class AuthenticationController {
     }
 
     List<PerfilEnum> perfis = new ArrayList<>();
+    String userName = "";
+    String displayName = "";
 
     String usernameFromToken = jwtTokenUtil.getUsernameFromToken(token.orElse(""));
     if (usernameFromToken == null || usernameFromToken.trim().isEmpty()) {
       log.warn("gerarRefreshTokenJwt - username nao encontrado");
       erros.add("Username não encontrado no token");
     } else {
-      UserDetails userDetails = userDetailsService.loadUserByUsername(usernameFromToken);
+      JwtUser userDetails = (JwtUser) userDetailsService.loadUserByUsername(usernameFromToken);
       if (userDetails != null) {
         userDetails.getAuthorities().forEach(auth -> perfis.add(PerfilEnum.valueOf(auth.getAuthority())));
+        userName = userDetails.getUsername();
+        displayName = userDetails.getDisplayName();
       } else {
         log.warn("gerarRefreshTokenJwt - usuario {} nao encontrado", usernameFromToken);
         erros.add(MessageFormat.format("Usuario: {0} não encontrado", usernameFromToken));
@@ -133,7 +137,7 @@ public class AuthenticationController {
     }
 
     String refreshedToken = jwtTokenUtil.refreshToken(token.get());
-    response.setData(new TokenDto(refreshedToken, perfis));
+    response.setData(new TokenDto(refreshedToken, userName, displayName, perfis));
     return ResponseEntity.ok(response);
   }
 

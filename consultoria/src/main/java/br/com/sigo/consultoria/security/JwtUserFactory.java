@@ -20,7 +20,7 @@ public class JwtUserFactory {
    * @return JwtUser
    */
   public static JwtUser create(Usuario usuario, List<PerfilEnum> perfis) {
-    return new JwtUser(Long.valueOf(usuario.getId()), String.valueOf(usuario.getCodigo()), usuario.getSenha(),
+    return new JwtUser(Long.valueOf(usuario.getId()), String.valueOf(usuario.getCodigo()), usuario.getSenha(), usuario.getNome(),
         mapToGrantedAuthorities(perfis));
   }
 

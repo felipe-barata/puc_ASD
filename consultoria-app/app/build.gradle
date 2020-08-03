@@ -1,0 +1,60 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 29
+
+
+    defaultConfig {
+        applicationId "br.com.sigo.consultoria"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation "androidx.core:core-ktx:$core_version"
+
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+    implementation "com.google.android.material:material:$materialVersion"
+    implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: "$retrofit2_version"
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: "$okhttp"
+    implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: "$logging_interceptor"
+    implementation(group: 'com.squareup.retrofit2', name: 'retrofit', version: "$retrofit2_version") {
+        exclude module: 'okhttp'
+    }
+
+    //Koin - Injeção de dependências
+    implementation "org.koin:koin-android-scope:$koin_version"
+    implementation "org.koin:koin-android-viewmodel:$koin_version"
+    implementation "org.koin:koin-android-ext:$koin_version"
+
+    implementation "androidx.preference:preference:$preference"
+
+    implementation "com.google.code.gson:gson:$gson_version"
+
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$android_junit_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+}
