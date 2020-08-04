@@ -9,8 +9,10 @@ import br.com.sigo.consultoria.security.utils.JwtTokenUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -69,20 +71,30 @@ public class AuthenticationController {
       return ResponseEntity.badRequest().body(response);
     }
 
-    log.info("gerarTokenJwt - Gerando token para o codigo {}.", authenticationDto.getCodigo());
-    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-        authenticationDto.getCodigo(), authenticationDto.getSenha()));
-    SecurityContextHolder.getContext().setAuthentication(authentication);
+    try {
+      log.info("gerarTokenJwt - Gerando token para o codigo {}.", authenticationDto.getCodigo());
+      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+          authenticationDto.getCodigo(), authenticationDto.getSenha()));
+      SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    JwtUser userDetails = (JwtUser) userDetailsService.loadUserByUsername(String.valueOf(authenticationDto.getCodigo()));
+      JwtUser userDetails = (JwtUser) userDetailsService.loadUserByUsername(String.valueOf(authenticationDto.getCodigo()));
 
-    List<PerfilEnum> perfis = new ArrayList<>();
-    userDetails.getAuthorities().forEach(auth -> perfis.add(PerfilEnum.valueOf(auth.getAuthority())));
+      List<PerfilEnum> perfis = new ArrayList<>();
+      userDetails.getAuthorities().forEach(auth -> perfis.add(PerfilEnum.valueOf(auth.getAuthority())));
 
-    String token = jwtTokenUtil.obterToken(userDetails);
-    response.setData(new TokenDto(token, userDetails.getUsername(), userDetails.getDisplayName(), perfis));
+      String token = jwtTokenUtil.obterToken(userDetails);
+      response.setData(new TokenDto(token, userDetails.getUsername(), userDetails.getDisplayName(), perfis));
 
-    return ResponseEntity.ok(response);
+      return ResponseEntity.ok(response);
+    } catch (BadCredentialsException e) {
+      response.setErrors(new ArrayList<>());
+      response.getErrors().add("Login/Senha inválido");
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    } catch (Exception e) {
+      response.setErrors(new ArrayList<>());
+      response.getErrors().add(e.getMessage());
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
   }
 
   /**

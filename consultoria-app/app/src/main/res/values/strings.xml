@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">Consultoria</string>
+    <string name="title_activity_settings">Configurações</string>
+
+    <string name="endereco">Endereço do servidor</string>
+    <string name="endereco_summary">Informe a URL do servidor de consultoria.</string>
+    <string name="timeout_conexao">Timeout de conexão</string>
+    <string name="timeout_conexao_summary">Este valor se refere ao tempo, em segundos, que o aplicativo irá aguardar até que seja estabelecida uma conexão com o servidor.</string>
+    <string name="timeout_read">Timeout de leitura</string>
+    <string name="timeout_read_summary">Este valor refere-se ao tempo, em segundos, que o aplicativo aguardará por uma resposta do servidor após estabelecer conexão.</string>
+    <string name="timeout_write">Timeout de escrita</string>
+    <string name="timeout_write_summary">Este valor se refere ao tempo, em segundos, que o aplicativo aguardará durante o envio de informações ao servidor após a conexão.</string>
+    <string name="nao_foi_possivel_conectar">Não foi possível conectar no servidor, verifique as configurações de rede/internet.</string>
+    <string name="erro_servidor">Ocorreu um erro ao executar essa operação</string>
+    <string name="hint_username">Nome de usuário</string>
+    <string name="hint_senha">Senha</string>
+    <string name="login">Login</string>
+    <string name="senha_obrigatoria">O campo senha é obrigatório</string>
+    <string name="username_obrigatorio">Nome de usuário é obrigatório</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="tentar_novamente">Tentar novamente</string>
+    <string name="efetuando_login">Efetuando login....</string>
+    <string name="config_atualizadas">Configurações atualizadas</string>
+    <string name="erro_atualizar_config">Erro atualizar configurações</string>
+    <string name="save">Salvar</string>
+    <string name="configurar">Configurar</string>
+    <string name="ok">OK</string>
+    <string name="loading">Loading...</string>
+    <string name="autenticando">Autenticando...</string>
+    <string name="sem_conexao">Sem conexão de internet</string>
 </resources>

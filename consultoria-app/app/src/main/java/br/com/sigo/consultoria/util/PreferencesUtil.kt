@@ -2,10 +2,23 @@ package br.com.sigo.consultoria.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import br.com.sigo.consultoria.domain.Configuration
 
 class PreferencesUtil(val context: Context) {
+
+    fun saveJsonUserToPreferences(user: String) {
+        val prefs = getSharedPreferences(context)
+        val editor = prefs.edit()
+        editor.putString("currentUser", user)
+        editor.apply()
+    }
+
+    fun getJsonUserFromPreferences(): String? {
+        val myPrefs = getSharedPreferences(context)
+        val user = myPrefs.getString("currentUser", null)
+        return user
+    }
 
     fun getConfigurationFromPreferences(): Configuration? {
         val prefs = getDefaultSharedPreferences(context)
@@ -37,6 +50,6 @@ class PreferencesUtil(val context: Context) {
     }
 
     companion object {
-        val PATH = "br.com.socin.conferenciacupom"
+        val PATH = "br.com.socin.consultoria"
     }
 }

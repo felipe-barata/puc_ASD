@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- editor.putString("url", configuration.getBaseUrl());
+        editor.putInt("connect", configuration.getConnectTimeout());
+        editor.putInt("read", configuration.getReadTimeout());
+        editor.putInt("write", configuration.getWriteTimeout());-->
+
+    <EditTextPreference
+        android:inputType="textUri"
+        android:key="url"
+        android:summary="@string/endereco_summary"
+        android:title="@string/endereco" />
+
+    <EditTextPreference
+        android:defaultValue="5"
+        android:inputType="numberSigned"
+        android:key="connect"
+        android:summary="@string/timeout_conexao_summary"
+        android:title="@string/timeout_conexao" />
+
+    <EditTextPreference
+        android:defaultValue="3"
+        android:inputType="numberSigned"
+        android:key="read"
+        android:summary="@string/timeout_read_summary"
+        android:title="@string/timeout_read" />
+
+    <EditTextPreference
+        android:defaultValue="3"
+        android:inputType="numberSigned"
+        android:key="write"
+        android:summary="@string/timeout_write_summary"
+        android:title="@string/timeout_write" />
+
+</PreferenceScreen>

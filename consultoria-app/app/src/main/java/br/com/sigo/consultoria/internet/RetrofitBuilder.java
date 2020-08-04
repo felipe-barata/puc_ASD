@@ -18,21 +18,16 @@ public class RetrofitBuilder {
                 .build();
 
         String baseUrl = configuration.getBaseUrl();
-        if (!baseUrl.startsWith("http")) {
-            baseUrl = "http://" + baseUrl + "/";
-        }
-
         if (!baseUrl.endsWith("/")) {
             baseUrl = baseUrl + "/";
         }
 
-        Retrofit retrofit = new Retrofit.
+        return new Retrofit.
                 Builder()
                 .baseUrl(baseUrl)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        return retrofit;
     }
 
 
