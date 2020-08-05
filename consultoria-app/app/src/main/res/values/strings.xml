@@ -28,4 +28,15 @@
     <string name="loading">Loading...</string>
     <string name="autenticando">Autenticando...</string>
     <string name="sem_conexao">Sem conexão de internet</string>
+    <string name="categoria">Categoria</string>
+    <string name="empresa">Empresa</string>
+    <string name="usuario">Usuario</string>
+    <string name="consulta_normas">Consultar normas</string>
+    <string name="sair">Sair</string>
+    <string name="codigo">Código</string>
+    <string name="descricao">Descrição</string>
+    <string name="salvar">Salvar</string>
+    <string name="descricao_obrigatoria">Obrigatório informar uma descrição</string>
+    <string name="consultando">Consultando...</string>
+    <string name="usuario_nao_encontrado">Usuario não encontrado</string>
 </resources>

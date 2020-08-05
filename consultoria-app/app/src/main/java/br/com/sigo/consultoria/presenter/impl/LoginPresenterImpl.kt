@@ -59,27 +59,25 @@ class LoginPresenterImpl : LoginPresenter {
         response: Response<br.com.sigo.consultoria.internet.Response<TokenDto>>,
         listener: LoginListener
     ) {
-        if (response != null) {
-            if (response.code() == 200) {
-                preferencesUtil.saveJsonUserToPreferences(gson.toJson(response.body()!!.data))
-                listener.onUser(response.body()!!.data!!)
-            } else {
-                try {
-                    response.errorBody()?.let {
-                        val resourceErro = GsonBuilder().create()
-                            .fromJson<br.com.sigo.consultoria.internet.Response<TokenDto>>(
-                                it.string(),
-                                br.com.sigo.consultoria.internet.Response::class.java
-                            )
-                        if (resourceErro.errors != null && !resourceErro.errors.isEmpty()) {
-                            listener.onError(resourceErro.errors)
-                        } else {
-                            listener.onError(R.string.erro_servidor)
-                        }
+        if (response.code() == 200) {
+            preferencesUtil.saveJsonUserToPreferences(gson.toJson(response.body()!!.data))
+            listener.onUser(response.body()!!.data!!)
+        } else {
+            try {
+                response.errorBody()?.let {
+                    val resourceErro = GsonBuilder().create()
+                        .fromJson<br.com.sigo.consultoria.internet.Response<TokenDto>>(
+                            it.string(),
+                            br.com.sigo.consultoria.internet.Response::class.java
+                        )
+                    if (resourceErro.errors != null && !resourceErro.errors.isEmpty()) {
+                        listener.onError(resourceErro.errors)
+                    } else {
+                        listener.onError(R.string.erro_servidor)
                     }
-                } catch (e: Exception) {
-                    Log.e(TAG, "trataResultado", e)
                 }
+            } catch (e: Exception) {
+                Log.e(TAG, "trataResultado", e)
             }
         }
     }

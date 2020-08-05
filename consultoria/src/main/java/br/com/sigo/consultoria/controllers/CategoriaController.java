@@ -73,13 +73,14 @@ public class CategoriaController {
   }
 
 
+  //POST por que a API retrofit no android nao suporta body em GET
   @Operation(summary = "Retorna todass as categorias, com paginação")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retorna todas as categorias conforme paginação"),
       @ApiResponse(responseCode = "204", description = "Não existem categorias para retornar"),
       @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor", content = @Content(schema = @Schema(implementation = Response.class)))
   })
-  @GetMapping(produces = "application/json", consumes = "application/json")
+  @PostMapping(produces = "application/json", consumes = "application/json", value = "/listar")
   @Secured("ROLE_USUARIO")
   public ResponseEntity<Response<Page<CategoriaDTO>>> retornaTodasCategorias(@RequestBody PaginacaoDTO pageable) {
     Response<Page<CategoriaDTO>> response = new Response<>();

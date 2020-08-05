@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TestCategoriaController {
 
   private static final String URL = "/api/categoria";
+  private static final String LISTAR = "/api/categoria/listar";
   private static final String DESC = "Teste";
   private static final int CAT = 1;
   private static final int SIZE = 1;
@@ -91,7 +92,7 @@ public class TestCategoriaController {
 
   @Test
   public void testRetornaTodasCategoriasNaoAutorizado() throws Exception {
-    mvc.perform(MockMvcRequestBuilders.get(URL)
+    mvc.perform(MockMvcRequestBuilders.post(LISTAR)
         .content(objectMapper.writeValueAsString(getPageable()))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
@@ -100,7 +101,7 @@ public class TestCategoriaController {
   @Test
   @WithMockUser
   public void testRetornaTodasCategoriasAcessoNegado() throws Exception {
-    mvc.perform(MockMvcRequestBuilders.get(URL)
+    mvc.perform(MockMvcRequestBuilders.post(LISTAR)
         .content(objectMapper.writeValueAsString(getPageable()))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isForbidden());
@@ -112,7 +113,7 @@ public class TestCategoriaController {
     BDDMockito.given(categoriaService.retornarTodasCategorias(PageRequest.of(getPageable().getPagina(), getPageable().getQtdRegistros())))
         .willReturn(retornaPage());
 
-    mvc.perform(MockMvcRequestBuilders.get(URL)
+    mvc.perform(MockMvcRequestBuilders.post(LISTAR)
         .content(objectMapper.writeValueAsString(getPageable()))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
@@ -124,7 +125,7 @@ public class TestCategoriaController {
     BDDMockito.given(categoriaService.retornarTodasCategorias(PageRequest.of(getPageable().getPagina(), getPageable().getQtdRegistros())))
         .willReturn(Page.empty());
 
-    mvc.perform(MockMvcRequestBuilders.get(URL)
+    mvc.perform(MockMvcRequestBuilders.post(LISTAR)
         .content(objectMapper.writeValueAsString(getPageable()))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNoContent());

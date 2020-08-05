@@ -21,6 +21,7 @@ import br.com.sigo.consultoria.presenter.LoginPresenter
 import br.com.sigo.consultoria.util.LoadingHelper
 import br.com.sigo.consultoria.view.listeners.LoginListener
 import org.koin.android.ext.android.inject
+import java.text.MessageFormat
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener, LoginListener,
     TextView.OnEditorActionListener {
@@ -97,7 +98,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, LoginListener,
     override fun onUser(tokenDto: TokenDto) {
         Log.d(TAG, "onUser")
         loadingHelper.finish()
-        Toast.makeText(this, tokenDto.displayName, Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            this,
+            MessageFormat.format("Bem vindo {0}!", tokenDto.displayName),
+            Toast.LENGTH_LONG
+        ).show()
+        val i = Intent(this, MenuActivity::class.java)
+        i.putExtra(EXTRA_USER, tokenDto)
+        startActivity(i)
+        finish()
     }
 
     override fun onError(message: String) {
@@ -139,5 +148,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, LoginListener,
 
     companion object {
         private val TAG = "LGNActivity"
+        public val EXTRA_USER = "user"
     }
 }
