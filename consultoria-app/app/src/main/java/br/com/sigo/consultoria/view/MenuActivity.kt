@@ -98,14 +98,23 @@ class MenuActivity : AppCompatActivity(), View.OnClickListener {
 
     fun btnEmpresa() {
         Log.i(TAG, "btnEmpresa")
+        val i = Intent(this, EmpresaActivity::class.java)
+        i.putExtra(EXTRA_USER, tokenDto)
+        startActivity(i)
     }
 
     fun btnUsuario() {
         Log.i(TAG, "btnUsuario")
+        val i = Intent(this, UsuarioActivity::class.java)
+        i.putExtra(EXTRA_USER, tokenDto)
+        startActivity(i)
     }
 
     fun btnConsultaNormas() {
         Log.i(TAG, "btnConsultaNormas")
+        val i = Intent(this, ConsultaNormasActivity::class.java)
+        i.putExtra(EXTRA_USER, tokenDto)
+        startActivity(i)
     }
 
     companion object {

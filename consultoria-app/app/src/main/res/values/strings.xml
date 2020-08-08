@@ -39,4 +39,24 @@
     <string name="descricao_obrigatoria">Obrigatório informar uma descrição</string>
     <string name="consultando">Consultando...</string>
     <string name="usuario_nao_encontrado">Usuario não encontrado</string>
+    <string name="nome">Nome</string>
+    <string name="tipo_usuario">Tipo de usuario</string>
+    <string name="codigo_obrigatorio">Código obrigatório</string>
+    <string name="nome_obrigatorio">Nome é obrigatório</string>
+    <string name="salvando">Salvando....</string>
+    <string name="consultar">Consultar</string>
+    <string name="sincronizar">Sincronizar</string>
+
+
+    <string-array name="array_admin">
+        <item>Usuário</item>
+        <item>Consultor</item>
+        <item>Administrador</item>
+    </string-array>
+
+    <string-array name="array_usuario">
+        <item>Usuário</item>
+        <item>Consultor</item>
+    </string-array>
+
 </resources>

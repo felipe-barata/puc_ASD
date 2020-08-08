@@ -16,7 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.MenuActivity"></activity>
+        <activity android:name=".view.ConsultaNormasActivity"></activity>
+        <activity android:name=".view.EmpresaActivity" />
+        <activity android:name=".view.UsuarioActivity" />
+        <activity android:name=".view.MenuActivity" />
         <activity android:name=".view.CategoriaActivity" />
         <activity android:name=".view.LoadingActivity" />
         <activity android:name=".view.LoginActivity">

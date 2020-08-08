@@ -148,6 +148,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, LoginListener,
 
     companion object {
         private val TAG = "LGNActivity"
-        public val EXTRA_USER = "user"
+        val EXTRA_USER = "user"
     }
 }
