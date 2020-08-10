@@ -46,6 +46,22 @@
     <string name="salvando">Salvando....</string>
     <string name="consultar">Consultar</string>
     <string name="sincronizar">Sincronizar</string>
+    <string name="cnpj">CNPJ</string>
+    <string name="codigo_postal">Código postal</string>
+    <string name="codigo_pais">Código do País</string>
+    <string name="estado">Estado</string>
+    <string name="cidade">Cidade</string>
+    <string name="bairro">Bairro</string>
+    <string name="endereco_empresa">Endereço</string>
+    <string name="numero">Número</string>
+    <string name="nenhuma_categoria">Nenhuma categoria foi encontrada</string>
+    <string name="cnpj_obrigatorio">Obrigatório informar um CNPJ</string>
+    <string name="postal_obrigatorio">Obrigatório informar código postal</string>
+    <string name="pais_obrigatorio">Obrigatório informar país</string>
+    <string name="estado_obrigatorio">Obrigatório informar estado</string>
+    <string name="cidade_obrigatorio">Obrigatório informar cidade</string>
+    <string name="bairro_obrigatorio">Obrigatório informar bairro</string>
+    <string name="numero_obrigatorio">Obrigatório informar número</string>
 
 
     <string-array name="array_admin">

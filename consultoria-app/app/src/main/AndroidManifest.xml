@@ -16,13 +16,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.ConsultaNormasActivity"></activity>
-        <activity android:name=".view.EmpresaActivity" />
-        <activity android:name=".view.UsuarioActivity" />
-        <activity android:name=".view.MenuActivity" />
-        <activity android:name=".view.CategoriaActivity" />
-        <activity android:name=".view.LoadingActivity" />
-        <activity android:name=".view.LoginActivity">
+        <activity
+            android:name=".view.ConsultaNormasActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.EmpresaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.UsuarioActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.MenuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.CategoriaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.LoadingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,7 +45,8 @@
         </activity>
         <activity
             android:name=".view.SettingsActivity"
-            android:label="@string/title_activity_settings" />
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

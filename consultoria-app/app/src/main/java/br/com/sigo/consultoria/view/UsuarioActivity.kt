@@ -18,7 +18,6 @@ import br.com.sigo.consultoria.services.UsuarioService
 import br.com.sigo.consultoria.util.LoadingHelper
 import br.com.socin.conferenciacupom.internet.Server
 import com.google.android.material.textfield.TextInputEditText
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.koin.android.ext.android.inject
 import retrofit2.Call
@@ -27,8 +26,6 @@ import java.text.MessageFormat
 
 class UsuarioActivity : AppCompatActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
-
-    private val gson: Gson by inject()
 
     private val server: Server by inject()
 
