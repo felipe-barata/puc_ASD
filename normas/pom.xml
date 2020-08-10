@@ -15,7 +15,7 @@
 	<description>Módulo Repositório de Normas do SIGO (Sistema integrado de gestão e operação)</description>
 
 	<properties>
-		<java.version>14</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
