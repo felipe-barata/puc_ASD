@@ -53,7 +53,7 @@ public class TestNormaController {
   public void testConsultarNormas() throws Exception {
     BDDMockito.given(normaService.retornarTodasNormas(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString())).willReturn(retornaPage());
 
-    mvc.perform(MockMvcRequestBuilders.get(URL)
+    mvc.perform(MockMvcRequestBuilders.post(URL)
         .content(objectMapper.writeValueAsString(getDTO()))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
@@ -65,7 +65,7 @@ public class TestNormaController {
 
     ConsultaNormaDTO dto = getDTO();
     dto.setOrdenacao(null);
-    mvc.perform(MockMvcRequestBuilders.get(URL)
+    mvc.perform(MockMvcRequestBuilders.post(URL)
         .content(objectMapper.writeValueAsString(dto))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
@@ -77,7 +77,7 @@ public class TestNormaController {
 
     ConsultaNormaDTO dto = getDTO();
     dto.setParam(null);
-    mvc.perform(MockMvcRequestBuilders.get(URL)
+    mvc.perform(MockMvcRequestBuilders.post(URL)
         .content(objectMapper.writeValueAsString(dto))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
@@ -88,7 +88,7 @@ public class TestNormaController {
     ConsultaNormaDTO dto = getDTO();
     dto.setOrdenacao("asc");
     BDDMockito.given(normaService.retornarTodasNormas(dto.getPage(), dto.getSize(), dto.getOrdenacao(), dto.getParam())).willThrow(OrdemInvalidaException.class);
-    mvc.perform(MockMvcRequestBuilders.get(URL)
+    mvc.perform(MockMvcRequestBuilders.post(URL)
         .content(objectMapper.writeValueAsString(dto))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest());
@@ -99,7 +99,7 @@ public class TestNormaController {
     ConsultaNormaDTO dto = getDTO();
     dto.setParam("tetse");
     BDDMockito.given(normaService.retornarTodasNormas(dto.getPage(), dto.getSize(), dto.getOrdenacao(), dto.getParam())).willThrow(ParamNormaInvalido.class);
-    mvc.perform(MockMvcRequestBuilders.get(URL)
+    mvc.perform(MockMvcRequestBuilders.post(URL)
         .content(objectMapper.writeValueAsString(dto))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest());
@@ -111,7 +111,7 @@ public class TestNormaController {
 
     ConsultaNormaDTO dto = getDTO();
     dto.setOrdenacao(null);
-    mvc.perform(MockMvcRequestBuilders.get(URL)
+    mvc.perform(MockMvcRequestBuilders.post(URL)
         .content(objectMapper.writeValueAsString(dto))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNoContent());
