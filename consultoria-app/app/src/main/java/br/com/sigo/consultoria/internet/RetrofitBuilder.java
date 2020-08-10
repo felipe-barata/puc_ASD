@@ -10,14 +10,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitBuilder {
 
-    public Retrofit getRetrofit(Configuration configuration) {
+    public Retrofit getRetrofit(Configuration configuration, String url) {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(configuration.getConnectTimeout(), TimeUnit.SECONDS)
                 .readTimeout(configuration.getReadTimeout(), TimeUnit.SECONDS)
                 .writeTimeout(configuration.getWriteTimeout(), TimeUnit.SECONDS)
                 .build();
 
-        String baseUrl = configuration.getBaseUrl();
+        String baseUrl = url;
         if (!baseUrl.endsWith("/")) {
             baseUrl = baseUrl + "/";
         }

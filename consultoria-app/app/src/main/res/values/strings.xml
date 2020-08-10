@@ -62,6 +62,10 @@
     <string name="cidade_obrigatorio">Obrigatório informar cidade</string>
     <string name="bairro_obrigatorio">Obrigatório informar bairro</string>
     <string name="numero_obrigatorio">Obrigatório informar número</string>
+    <string name="tipo">Tipo</string>
+    <string name="endereco_norma_summary">Informe a URL do servidor de normas</string>
+    <string name="endereco_norma">Endereço do servidor de normas</string>
+    <string name="nao_configurado">Servidor não configurado</string>
 
 
     <string-array name="array_admin">

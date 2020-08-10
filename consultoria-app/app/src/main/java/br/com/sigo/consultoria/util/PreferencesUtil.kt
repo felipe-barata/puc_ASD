@@ -24,15 +24,17 @@ class PreferencesUtil(val context: Context) {
         val prefs = getDefaultSharedPreferences(context)
         var configuration: Configuration? = null
         val baseUrl = prefs.getString("url", null)
+        val normaUrl = prefs.getString("url_norma", null)
         val connectTimeout = prefs.getString("connect", "10")
         val readTimeout = prefs.getString("read", "3")
         val writeTimeout = prefs.getString("write", "3")
-        if (baseUrl != null && !baseUrl.isEmpty()) {
+        if (baseUrl != null && !baseUrl.isEmpty() && normaUrl != null) {
             configuration = Configuration(
                 baseUrl,
                 connectTimeout!!.toInt(),
                 readTimeout!!.toInt(),
-                writeTimeout!!.toInt()
+                writeTimeout!!.toInt(),
+                normaUrl
             )
         }
         return configuration

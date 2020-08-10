@@ -50,6 +50,7 @@ public class NormaController {
   @Autowired
   private NormaService normaService;
 
+  //POST devido a limitação do retrofit no android
   @Operation(summary = "Consultar normas")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Sucesso"),
@@ -57,7 +58,7 @@ public class NormaController {
       @ApiResponse(responseCode = "400", description = "Ocorreram erros de validação", content = @Content(schema = @Schema(implementation = Response.class))),
       @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor", content = @Content(schema = @Schema(implementation = Response.class)))
   })
-  @GetMapping(produces = "application/json", consumes = "application/json", value = "consultarNormas")
+  @PostMapping(produces = "application/json", consumes = "application/json", value = "consultarNormas")
   public ResponseEntity<Response<Page<NormasDTO>>> consultarNormas(@RequestBody ConsultaNormaDTO dto) {
     log.info("consultarNormas - dto: {}", dto.toString());
     Response<Page<NormasDTO>> response = new Response<>();

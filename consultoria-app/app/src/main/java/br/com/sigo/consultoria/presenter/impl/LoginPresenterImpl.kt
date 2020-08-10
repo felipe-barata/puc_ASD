@@ -51,6 +51,8 @@ class LoginPresenterImpl : LoginPresenter {
                     trataResultado(response, listener)
                 }
             })
+        } else{
+            listener.onError(R.string.nao_configurado)
         }
 
     }

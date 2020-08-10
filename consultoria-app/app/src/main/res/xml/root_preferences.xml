@@ -13,6 +13,12 @@
         android:title="@string/endereco" />
 
     <EditTextPreference
+        android:inputType="textUri"
+        android:key="url_norma"
+        android:summary="@string/endereco_norma_summary"
+        android:title="@string/endereco_norma" />
+
+    <EditTextPreference
         android:defaultValue="5"
         android:inputType="numberSigned"
         android:key="connect"

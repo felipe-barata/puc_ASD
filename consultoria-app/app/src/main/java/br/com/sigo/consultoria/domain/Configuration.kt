@@ -6,5 +6,6 @@ data class Configuration(
     var baseUrl: String,
     var connectTimeout: Int,
     var readTimeout: Int,
-    var writeTimeout: Int
+    var writeTimeout: Int,
+    var normaUrl: String?
 ) : Serializable
