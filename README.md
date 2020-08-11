@@ -6,3 +6,13 @@
 
 
 Repositório para o TCC da especialização em Arquitetura de Software Distribuído da PUC-Minas
+
+
+# swagger normas: 
+https://pucasd-normas.herokuapp.com/swagger-ui.html
+
+# swagger gestão:
+https://pucasd-sigo.herokuapp.com/swagger-ui.html
+
+# swagger consultoria:
+https://pucasd-consultoria.herokuapp.com/swagger-ui.html
