@@ -137,6 +137,8 @@ class CategoriaActivity : AppCompatActivity(), View.OnClickListener {
                         categoriaAdapter.list = categorias
                         categoriaAdapter.notifyDataSetChanged()
                         loadingHelper.finish()
+                    } else if (response.code() == 204) {
+                        loadingHelper.finish()
                     } else {
                         val erros = StringBuilder();
                         response.body()!!.errors!!.forEach { erros.append(it).append("\n") }
