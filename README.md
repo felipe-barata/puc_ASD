@@ -16,3 +16,6 @@ https://pucasd-sigo.herokuapp.com/swagger-ui.html
 
 # swagger consultoria:
 https://pucasd-consultoria.herokuapp.com/swagger-ui.html
+
+# Link do Youtube para o vídeo da POC
+https://youtu.be/KlhE3xRV20w
