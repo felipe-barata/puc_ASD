@@ -19,3 +19,13 @@ https://pucasd-consultoria.herokuapp.com/swagger-ui.html
 
 # Link do Youtube para o vídeo da POC
 https://youtu.be/KlhE3xRV20w
+
+# Instruções para teste:
+
+O app está na raíz do projeto (consultoria-app.apk)
+Basta instalar e configurar as URLs quando abrir pela primeira vez.
+URL normas: https://pucasd-normas.herokuapp.com
+URL consultoria: https://pucasd-consultoria.herokuapp.com
+Os campos de timeout podem ser mantidos o valor default.
+
+Já existe um usuário ADM cadastrado para testes com login 1 e senha 123456.
